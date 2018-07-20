@@ -3,28 +3,49 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { HttpModule } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { TodosPage } from '../pages/todos/todos';
+import { ListsPage }  from '../pages/lists/lists';
+import { AddTaskModalPage } from '../pages/add-task-modal/add-task-modal'
+import { TodoService } from '../shared/todo-service';
+import { ListsService } from '../shared/lists-service';
+import { PrioritizedTodosPipe } from '../pipes/prioritized-todos';
+import { DoneTodosPipe } from '../pipes/done-todos';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    TodosPage,
+    ListsPage,
+    AddTaskModalPage,
+    PrioritizedTodosPipe,
+    DoneTodosPipe
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    HttpModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot({
+      name: '__mydb',
+         driverOrder: ['indexeddb', 'sqlite', 'websql']
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    TodosPage,
+    ListsPage,
+    AddTaskModalPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    TodoService,
+    ListsService
   ]
 })
 export class AppModule {}
